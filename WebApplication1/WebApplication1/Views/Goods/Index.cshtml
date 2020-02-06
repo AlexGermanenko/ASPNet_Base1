@@ -1,38 +1,117 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "CompShop";
 }
 
+<style>
+    @@font-face {
+        font-family: 'FontAwesome';
+        src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal
+    }
+
+    .glyphicon {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    .glyphicon-chevron-right:before {
+        content: "\f061";
+    }
+
+    .glyphicon-chevron-left:before {
+        content: "\f060";
+    }
+</style>
+
 <div class="text-center">
-    <h1 class="display-4">Comp shop</h1>
+    <h1 class="display-4">Comp Shop</h1>
 </div>
 
 <tr>
     <th>Сортировать по: </th>
     <th>
-        @Html.ActionLink(" имени ", "Index", new { sortOrder = SortState.Name })
+        @Html.ActionLink(" имени ", "Index", new { sortOrder = ViewData["NameSort"] })
     </th>
     <th>
-        рейтингу
+        @Html.ActionLink(" рейтингу ", "Index", new { sortOrder = ViewData["RateSort"] })
     </th>
     <th>
-        @Html.ActionLink(" цене", "Index", new { sortOrder = SortState.Price })
+        @Html.ActionLink(" цене", "Index", new { sortOrder = ViewData["PriceSort"] })
     </th>
 </tr>
 
 <div class="row align-items-end">
-    @foreach (Product product in Model)
+    @foreach (Product product in Model.Goods)
     {
-        <div class="col">
-            <div class="card" style="margin: 30px 0 0 0; height: 530px; min-width: 280px; border: solid 1px #00ced1; border-radius: 8px" >
-                <img src=@product.ImgURL class="rounded mx-auto d-block">
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">@product.Description</p>
+        <div class="col-lg-4">
+            
+                <div class="card" style="margin: 30px 0 0 0; height: 530px; min-width: 280px; border: solid 1px #00ced1; border-radius: 8px">
+                    <img src=@product.ImgURL class="rounded mx-auto d-block">
+                    <div class="card-body">
+                        <a asp-controller="Goods" asp-action="Product" asp-route-productId="@product.Id">
+                            <h5 class="card-title">@product.Name</h5>
+                        </a>
+                        <p class="card-text">@product.Description</p>
+                    </div>
+                    <div style="align-self: flex-end; border-left: 1px solid #d8d8d8; border-top-left-radius: 8px;" class="card-footer">
+                        <h4 class="text-muted">@product.Price.ToString("C")</h4>
+                    </div>
                 </div>
-                <div style="align-self: flex-end; border-left: 1px solid #d8d8d8; border-top-left-radius: 8px;" class="card-footer">
-                    <h4 class="text-muted">@product.Price.ToString("C")</h4>
-                </div>
-            </div>
+            
         </div>
     }
 </div>
+
+<div style="margin-top: 60px; justify-content: center;}" class="pagination">
+
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"><i class="glyphicon glyphicon-chevron-left"></i></a>
+    }
+
+    @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
+    {
+        if (i == 8)
+        {
+            break;
+        }
+
+        if (i == Model.PageViewModel.PageNumber)
+        {
+            <span>@i</span>
+            continue;
+        }
+
+        <a asp-action="Index" asp-route-page="@i">@i</a>
+    }
+
+    @if (@Model.PageViewModel.TotalPages >= 9)
+    {
+        <span>...</span>
+    }
+
+    @if (@Model.PageViewModel.TotalPages >= 8)
+    {
+        if (Model.PageViewModel.TotalPages == Model.PageViewModel.PageNumber)
+        {
+            <span>@Model.PageViewModel.PageNumber</span>
+        }
+        else
+        {
+            <a asp-action="Index" asp-route-page="@Model.PageViewModel.TotalPages">@Model.PageViewModel.TotalPages</a>
+        }
+
+    }
+
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"><i class="glyphicon glyphicon-chevron-right"></i></a>
+    }
+
+</div>
+

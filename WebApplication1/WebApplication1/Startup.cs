@@ -7,13 +7,25 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebApplication1.Interfaces;
+using WebApplication1.Mocks;
+using WebApplication1.Models.Data;
+using WebApplication1.Models.Data.DB;
 
 namespace WebApplication1
 {
     public class Startup
     {
+        private IConfigurationRoot _confString;
+
+        public Startup(IHostingEnvironment hostEnv)
+        {
+            _confString = new ConfigurationBuilder().SetBasePath(hostEnv.ContentRootPath).AddJsonFile("dbsettings.json").Build();
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,7 +43,8 @@ namespace WebApplication1
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            services.AddDbContext<AppDBContext>(options => options.UseSqlServer(_confString.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IGoods, DBGoods>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -59,6 +72,12 @@ namespace WebApplication1
                     name: "default",
                     template: "{controller=Goods}/{action=Index}/{id?}");
             });
+
+            using (IServiceScope scope = app.ApplicationServices.CreateScope())
+            {
+                AppDBContext context = scope.ServiceProvider.GetRequiredService<AppDBContext>();
+                DBInit.Init(context); 
+            }
         }
     }
 }

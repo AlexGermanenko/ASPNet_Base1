@@ -3,10 +3,53 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CompShop</title>
-    <style charset="utf-8">.fa, .far, .fas {
-     font-family: "FontAwesome";
- }.fa-arrow-left:before {content: "\f060";}.pagination{width:100%;}.pagination a,.pagination span{margin-bottom:30px;text-align:center;display:inline-block;width:40px;height:40px;line-height:40px;font-size:18px;background:transparent;border-radius:50px;margin-right:10px;color:#676767;font-weight:500;border:1px solid #bfbfbf}.pagination a{cursor:pointer}.pagination a:hover{transform:translateY(-5px) scale(1.1)}.pagination span,.pagination a:hover{background:#e7e7e7;border-color:#d2d0d0}</style>
+    <title>@ViewData["Title"]</title>
+    <style charset="utf-8">
+        .fa, .far, .fas {
+            font-family: "FontAwesome";
+        }
+
+        .fa-arrow-left:before {
+            content: "\f060";
+        }
+
+        .fa-arrow-right:before {
+            content: "\f061";
+        }
+
+        .pagination {
+            width: 100%;
+        }
+
+            .pagination a, .pagination span {
+                margin-bottom: 30px;
+                text-align: center;
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 18px;
+                background: transparent;
+                border-radius: 50px;
+                margin-right: 10px;
+                color: #00ced1;
+                font-weight: 500;
+                border: 1px solid #bfbfbf
+            }
+
+            .pagination a {
+                cursor: pointer
+            }
+
+                .pagination a:hover {
+                    transform: translateY(-5px) scale(1.1)
+                }
+
+                .pagination span, .pagination a:hover {
+                    background: #e7e7e7;
+                    border-color: #d2d0d0
+                }
+    </style>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     </environment>
@@ -23,7 +66,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Goods" asp-action="Index">Comp shop</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Goods" asp-action="Index">CompShop</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -34,26 +77,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Goods" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="SignIn">Sign in</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
+
+    <div class="container">
         <!-- <partial name="_CookieConsentPartial" />-->
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <div class="pagination"><a href="page-2" title="Предыдущая страница"><i class="fas fa-arrow-left"></i></a><a href="/courses/" title="Перейти на страницу № 1">1</a><a href="page-2" title="Перейти на страницу № 2">2</a><span>3</span><a href="page-4" title="Перейти на страницу № 4">4</a><a href="page-5" title="Перейти на страницу № 5">5</a><a href="page-6" title="Перейти на страницу № 6">6</a><a href="page-7" title="Перейти на страницу № 7">7</a><span>...</span><a href="page-8" title="Последняя страница">8</a><a href="page-4" title="Следующая страница"><i class="fas fa-arrow-right"></i></a></div>
-    
-
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - WebApplication1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container-fluid">
+            &copy; 2020 - CompShop - <a asp-area="" asp-controller="Goods" asp-action="Index">Home</a>
         </div>
     </footer>
 
