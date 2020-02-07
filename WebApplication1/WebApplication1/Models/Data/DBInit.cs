@@ -16,11 +16,11 @@ namespace WebApplication1.Models.Data
                 context.SaveChanges();
             }
 
-            if (!context.Rate.Any())
+            /*if (!context.Rate.Any())
             {
                 context.Rate.AddRange(GetRateList());
                 context.SaveChanges();
-            }
+            }*/
         }
 
         private static List<RateModel> GetRateList()
@@ -70,6 +70,11 @@ namespace WebApplication1.Models.Data
                         "Intel Core i7-8700T, 6x2400 МГц, IPS, 1920x1080, 16 ГБ DDR4, HDD 1 ТБ, SSD 256 ГБ, GeForce GTX 1050, Linux",
                         "https://c.dns-shop.ru/thumb/st1/fit/320/250/d30ab963ab4563f629e670f44cd96254/dc3ce0ccd3828cf301ae1847ee8c0db7a2e823d42cdd11d2669715dc73527a6b.jpg")
                 };
+
+            foreach (Product product in goodsList)
+            {
+                product.Rate = new RateModel(product.Id, 0, 0, product);
+            }
 
             return goodsList;
         }

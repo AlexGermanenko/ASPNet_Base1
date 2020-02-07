@@ -42,6 +42,26 @@ namespace WebApplication1.Controllers
             return View(product);
         }
 
+        private ProductViewModel TakeProductViewModel(int page, List<Product> goods)
+        {
+            int pageSize = 6;
+            int count = goods.Count();
+
+            goods = goods.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+
+            ViewData["PageViewModel"] = pageViewModel;
+
+            IndexViewModel indexViewModel = new IndexViewModel()
+            {
+                Goods = goods,
+                PageViewModel = pageViewModel
+            };
+
+            return indexViewModel;
+        }
+
         public IActionResult Index(int page = 1, SortState sortOrder = SortState.Name)
         {
             List<Product> goods = _goods.GetAllProducts();
