@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Models
+namespace WebApplication1.Models.ViewModels
 {
     public class PageViewModel
     {
@@ -16,20 +16,8 @@ namespace WebApplication1.Models
             TotalPages = (int)Math.Ceiling(count / (double)pageSize);
         }
 
-        public bool HasPreviousPage
-        {
-            get
-            {
-                return (PageNumber > 1);
-            }
-        }
+        public bool HasPreviousPage => PageNumber > 1;
 
-        public bool HasNextPage
-        {
-            get
-            {
-                return (PageNumber < TotalPages);
-            }
-        }
+        public bool HasNextPage => PageNumber < TotalPages;
     }
 }

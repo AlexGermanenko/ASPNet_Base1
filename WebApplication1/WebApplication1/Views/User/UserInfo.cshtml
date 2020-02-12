@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "UserInfo";
+}
+
+<h1>Информация о пользователе</h1>
+
+<div class="row">
+        <div class="validation" asp-validation-summary="ModelOnly" />
+        <div class="card col-lg-3" style="margin: 30px 0 0 0; height: 400px; min-width: 280px; border: solid 1px #00ced1; border-radius: 8px">
+            <center>
+                <div style="margin-top: 15px">
+                    <label>@Model.AuthorizedUser.Id</label><br />
+                </div>
+                <div style="margin-top: 15px">
+                    <label>@Model.AuthorizedUser.Name</label><br />
+                </div>
+                <div style="margin-top: 15px">
+                    <label>@Model.AuthorizedUser.Email</label><br />
+                </div>
+                <div style="margin-top: 15px">
+                    <label>@Model.AuthorizedUser.Password</label><br />
+                </div>
+                <div style="margin-top: 15px">
+                    <label>@Model.AuthorizedUser.IsAdmin</label><br />
+                </div>
+            </center>
+        </div>
+</div>

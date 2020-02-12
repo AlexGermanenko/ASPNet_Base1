@@ -15,11 +15,9 @@ namespace WebApplication1.Models
 
         public List<UserRateModel> RatesUsers { get; set; }
 
-        //public List<RateModel> ProductRates { get; set; }
-
         public UserModel()
         {
-            
+            RatesUsers = new List<UserRateModel>();
         }
     }
 }

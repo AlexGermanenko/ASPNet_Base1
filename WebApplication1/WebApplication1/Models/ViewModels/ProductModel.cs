@@ -1,6 +1,6 @@
-﻿namespace WebApplication1.Models
+﻿namespace WebApplication1.Models.ViewModels
 {
-    public class Product
+    public class ProductModel
     {
         public int Id { get; set; }
         public uint Price { get; set; }
@@ -11,7 +11,7 @@
 
         public RateModel Rate { get; set; }
 
-        public Product(string name, uint price, string description, string imgUrl)
+        public ProductModel(string name, uint price, string description, string imgUrl)
         {
             Price = price;
             Name = name;
@@ -19,7 +19,7 @@
             Description = description;
         }
 
-        public Product(int id, string name, uint price, string description, string imgUrl)
+        public ProductModel(int id, string name, uint price, string description, string imgUrl)
         {
             Id = id;
             Price = price;
@@ -28,7 +28,7 @@
             Description = description;
         }
 
-        public Product()
+        public ProductModel()
         {
             
         }

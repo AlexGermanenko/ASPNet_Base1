@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
+using WebApplication1.Models.ViewModels;
 
 namespace WebApplication1
 {
@@ -11,8 +12,7 @@ namespace WebApplication1
     {
         public DbSet<UserModel> User { get; set; }
         public DbSet<RateModel> Rate { get; set; }
-        //public DbSet<UserRateModel> UserRate { get; set; }
-        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductModel> Product { get; set; }
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {

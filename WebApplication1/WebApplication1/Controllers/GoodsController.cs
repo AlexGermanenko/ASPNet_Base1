@@ -3,68 +3,73 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Interfaces;
+using WebApplication1.Models.Data.Interfaces;
 using WebApplication1.Mocks;
 using WebApplication1.Models;
+using WebApplication1.Models.ViewModels;
 using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 using Controller = Microsoft.AspNetCore.Mvc.Controller;
 using JsonResult = Microsoft.AspNetCore.Mvc.JsonResult;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace WebApplication1.Controllers
 {
     public class GoodsController : Controller
     {
         private IGoods _goods;
+        private IUser _users;
 
-        public GoodsController(IGoods goods)
+        public GoodsController(IGoods goods, IUser users)
         {
             _goods = goods;
+            _users = users;
         }
 
-        public IActionResult Product(int productId, int stars)
+        public IActionResult Product(int productId)
         {
-            Product product = _goods.GetProductById(productId);
+            ProductModel product = _goods.GetProductById(productId);
 
-            if (stars!=0)
+            ProductViewModel productView = new ProductViewModel(product, RateStatus.ok);
+
+            string points = productView.Rate.ToString();
+
+            return View(productView);
+        }
+
+        [Authorize]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public IActionResult RateProduct(int productId, int stars)
+        {
+            ProductModel product = _goods.GetProductById(productId);
+            UserModel authorizedUser = _users.GetUserByEmail(HttpContext.User.Identity.Name);
+
+            RateStatus rateStatus = RateStatus.ok;
+
+            if (!authorizedUser.RatesUsers.Any(ru => ru.Rate != null && ru.Rate.ProductId == productId && ru.UserId == authorizedUser.Id))
             {
-                if (product.Rate == null)
+                if (stars != 0)
                 {
-                    
-                }
-                else
-                {
-                    
+                    _goods.ApplyRate(productId, stars, authorizedUser);
                 }
             }
-
-            return View(product);
-        }
-
-        private ProductViewModel TakeProductViewModel(int page, List<Product> goods)
-        {
-            int pageSize = 6;
-            int count = goods.Count();
-
-            goods = goods.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
-
-            ViewData["PageViewModel"] = pageViewModel;
-
-            IndexViewModel indexViewModel = new IndexViewModel()
+            else
             {
-                Goods = goods,
-                PageViewModel = pageViewModel
-            };
+                rateStatus = RateStatus.already_rate;
+            }            
 
-            return indexViewModel;
+            ProductViewModel productView = new ProductViewModel(product, rateStatus);
+
+            return Json(productView);
         }
 
+        
         public IActionResult Index(int page = 1, SortState sortOrder = SortState.Name)
         {
-            List<Product> goods = _goods.GetAllProducts();
+            //return Content(User.);
+
+            List<ProductModel> goods = _goods.GetAllProducts();
 
             goods = SortGoods(sortOrder, goods);
 
@@ -73,7 +78,7 @@ namespace WebApplication1.Controllers
             return View(indexViewModel);
         }
 
-        private IndexViewModel TakeIndexViewModel(int page, List<Product> goods)
+        private IndexViewModel TakeIndexViewModel(int page, List<ProductModel> goods)
         {
             int pageSize = 6;
             int count = goods.Count();
@@ -93,7 +98,7 @@ namespace WebApplication1.Controllers
             return indexViewModel;
         }
 
-        private List<Product> SortGoods(SortState sortOrder, List<Product> goods)
+        private List<ProductModel> SortGoods(SortState sortOrder, List<ProductModel> goods)
         {
             ViewData["NameSort"] = sortOrder == SortState.Name ? SortState.NameDesc : SortState.Name;
             ViewData["PriceSort"] = sortOrder == SortState.Price ? SortState.PriceDesc : SortState.Price;
