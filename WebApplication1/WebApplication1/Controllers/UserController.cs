@@ -24,6 +24,16 @@ namespace WebApplication1.Controllers
             _db = context;
         }
 
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult CheckEmail(string email)
+        {
+            UserModel user = _db.GetUserByEmail(email);
+
+            if (email == "admin@mail.ru" || email == "aaa@gmail.com")
+                return Json(false);
+            return Json(true);
+        }
+
         [Authorize]
         public async Task<IActionResult> UserInfo()
         {

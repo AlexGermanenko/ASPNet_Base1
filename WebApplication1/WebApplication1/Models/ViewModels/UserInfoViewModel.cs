@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication1.Models.Data.DB;
+﻿using System.Collections.Generic;
 using WebApplication1.Models.Data.Interfaces;
 
 namespace WebApplication1.Models.ViewModels
