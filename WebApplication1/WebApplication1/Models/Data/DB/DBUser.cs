@@ -29,5 +29,14 @@ namespace WebApplication1.Models.Data.DB
 
             _context.SaveChanges();
         }
+
+        public void Modify(UserModel User)
+        {
+            _context.Update(User);
+
+            _context.SaveChanges();
+        }
+
+        public bool EmailIsExist(string email) => Users.Any(u => u.Email == email);
     }
 }

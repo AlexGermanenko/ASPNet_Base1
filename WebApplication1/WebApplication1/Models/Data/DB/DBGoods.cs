@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models.Data.Interfaces;
-using WebApplication1.Models.ViewModels;
+using WebApplication1.Models;
 
 namespace WebApplication1.Models.Data.DB
 {
@@ -20,6 +20,27 @@ namespace WebApplication1.Models.Data.DB
         public List<ProductModel> GetAllProducts() => new List<ProductModel>(_context.Product.Include(p => p.Rate).ToList());
 
         public ProductModel GetProductById(int id) => _context.Product.Include(p => p.Rate).FirstOrDefault(p => p.Id == id);
+
+        public void ClearRate(int rateId)
+        {
+            if (rateId == 0)
+            {
+                return;
+            }
+
+            RateModel rate = _context.Rate.FirstOrDefault(r => r.Id == rateId);
+            
+            rate = new RateModel()
+            {
+                ProductId = rate.ProductId,
+                Votes = 0,
+                Stars = 0,
+                Product = GetProductById(rate.ProductId)
+            };
+
+            _context.Update(rate);
+            _context.SaveChanges();
+        }
 
         public void ApplyRate(int productId, int stars, UserModel user)
         {
@@ -55,6 +76,18 @@ namespace WebApplication1.Models.Data.DB
                 _context.Add(userRateModel);
                 _context.SaveChanges();
             }
+        }
+
+        public void AddProduct(ProductModel model)
+        {
+            _context.Add(model);
+            _context.SaveChanges();
+        }
+
+        public void ModifyProduct(ProductModel model)
+        {
+            _context.Update(model);
+            _context.SaveChanges();
         }
     }
 }

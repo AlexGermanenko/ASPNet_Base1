@@ -4,29 +4,45 @@
     ViewData["Title"] = "Login";
 }
 
+<style>
+    span, .validation {
+        color: orangered;
+    }
+</style>
+
 <h1>Вход на сайт</h1>
 
 <div class="row">
     <form asp-action="Login" asp-controller="User" asp-anti-forgery="true">
-        <div class="validation" asp-validation-summary="ModelOnly" />
-        <div class="card col-lg-3" style="margin: 30px 0 0 0; height: 300px; min-width: 280px; border: solid 1px #00ced1; border-radius: 8px">
+        <div class="card col-lg-3" style="margin: 30px 0 0 0; height: 330px; min-width: 280px; border: solid 1px #00ced1; border-radius: 8px">
             <center>
-                <div style="margin-top: 15px">
-                    <label asp-for="Email">Введите Email</label><br/>
-                    <input id="input_1" type="text" asp-for="Email"/>
-                    <span asp-validation-for="Email" />
-                </div>
-                <div style="margin-top: 15px;">
-                    <label asp-for="Password">Введите пароль</label><br/>
-                    <input id="input_2" asp-for="Password"/>
-                    <span asp-validation-for="Password" />
-                </div>
-                <div style="margin-top: 30px">
-                    <input type="submit" value="Войти" class="btn_"  />
-                </div>
-            </center>
+                <div style="height: 265px;">
 
-            <a style="margin-top: 40px; text-align: right;" asp-action="Register" asp-controller="User">Регистрация</a>
+                    <div style="margin-top: 15px">
+                        <label asp-for="Email"></label><br />
+                        <input id="input_1" type="text" asp-for="Email" /><br />
+                        <span asp-validation-for="Email" />
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <label asp-for="Password"></label><br />
+                        <input id="input_2" asp-for="Password" /><br />
+                        <span asp-validation-for="Password" />
+                    </div>
+                </div>
+
+                <a style="margin-top: 40px; text-align: right;" asp-action="Register" asp-controller="User">Регистрация</a>
+
+                <div style="margin-top: 8px">
+                    <input type="submit" value="Войти" class="btn_" />
+                </div>
+
+                <div style="margin-top: 15px" class="validation" asp-validation-summary="ModelOnly"></div>
+            </center>
         </div>
     </form>
 </div>
+
+@section scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

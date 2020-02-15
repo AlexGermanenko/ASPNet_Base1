@@ -4,8 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+
     <style charset="utf-8">
-        input{            
+        h1 {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            padding: 30px;
+        }
+
+        input {            
             border-radius: 5px;
         }
 
@@ -32,34 +39,34 @@
             width: 100%;
         }
 
-            .pagination a, .pagination span {
-                margin-bottom: 30px;
-                text-align: center;
-                display: inline-block;
-                width: 40px;
-                height: 40px;
-                line-height: 40px;
-                font-size: 18px;
-                background: transparent;
-                border-radius: 50px;
-                margin-right: 10px;
-                color: #00ced1;
-                font-weight: 500;
-                border: 1px solid #bfbfbf
-            }
+        .pagination a, .pagination span {
+            margin-bottom: 30px;
+            text-align: center;
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 18px;
+            background: transparent;
+            border-radius: 50px;
+            margin-right: 10px;
+            color: #00ced1;
+            font-weight: 500;
+            border: 1px solid #bfbfbf
+        }
 
-            .pagination a {
-                cursor: pointer
-            }
+        .pagination a {
+            cursor: pointer
+        }
 
-                .pagination a:hover {
-                    transform: translateY(-5px) scale(1.1)
-                }
+        .pagination a:hover {
+            transform: translateY(-5px) scale(1.1)
+        }
 
-                .pagination span, .pagination a:hover {
-                    background: #e7e7e7;
-                    border-color: #d2d0d0
-                }
+        .pagination span, .pagination a:hover {
+            background: #e7e7e7;
+            border-color: #d2d0d0
+        }
     </style>
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -88,7 +95,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a id="user" class="nav-link" asp-area="" asp-controller="User" asp-action="UserInfo">@User.Identity.Name</a>
+                                <a id="user" class="nav-link" asp-area="" asp-controller="Admin" asp-action="EditUser">@User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
@@ -112,8 +119,7 @@
         </nav>
     </header>
 
-    <div class="container">
-        <!-- <partial name="_CookieConsentPartial" />-->
+    <div id="container" class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

@@ -10,6 +10,9 @@ namespace WebApplication1.Models.Data.Interfaces
     {
         List<ProductModel> GetAllProducts();
         ProductModel GetProductById(int id);
+        void ClearRate(int productId);
         void ApplyRate(int productId, int stars, UserModel user);
+        void AddProduct(ProductModel model);
+        void ModifyProduct(ProductModel model);
     }
 }

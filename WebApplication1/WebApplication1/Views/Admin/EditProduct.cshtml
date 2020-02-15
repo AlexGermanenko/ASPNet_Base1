@@ -1,0 +1,119 @@
+﻿@model WebApplication1.Models.ProductModel
+
+<style>
+    span, .validation {
+        color: orangered;
+    }
+
+    .validation {
+        margin-top: 15px;
+        text-align: left;
+    }
+
+    input {
+        width: 90%;
+    }
+
+    .displ-o {
+        opacity: 0;
+    }
+    </style>
+
+<ul class="nav nav-tabs">
+
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="EditUser">Редактировать информацию о пользователе</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="AddProduct">Добавить товар</a>
+    </li>
+    <li id="editProduct" class="nav-item">
+        <a class="nav-link active" asp-area="" asp-controller="Admin" asp-action="EditProduct">Редактировать товар</a>
+    </li>
+</ul>
+
+<center>
+    <h1>Редактировать товар</h1>
+</center>
+
+<div class="row">
+    <div class="card col-lg-11" style="margin: 0 0 0 70px; border: solid 2px #00ced1; border-radius: 8px">
+        <form asp-action="EditProduct" asp-controller="Admin" asp-anti-forgery="true">
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="row">
+                        <input id="id" type="hidden" asp-for="Id" />
+                        <!--<input id="rateId" type="hidden" asp-for="RateId" />
+    <input id="rate" type="hidden" asp-for="Rate" />-->
+                        <div class="col-lg-2">
+                            <label asp-for="Name"></label><br />
+                            <input id="name" type="text" asp-for="Name" /><br />
+                            <span asp-validation-for="Name"></span>
+                        </div>
+                        <div class="col-lg-3">
+                            <label asp-for="Price"></label><br />
+                            <input id="price" type="text" asp-for="Price" /><br />
+                            <span asp-validation-for="Price" />
+                        </div>
+                        <div class="col-lg-3">
+                            <label asp-for="ImgURL"></label><br />
+                            <input id="imgURL" asp-for="ImgURL" /><br />
+                            <span asp-validation-for="ImgURL" />
+                        </div>
+                        <div class="col-lg-4">
+                            <label asp-for="Description"></label><br />
+                            <input id="description" type="text" asp-for="Description" /><br />
+                            <span asp-validation-for="Description" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2" style="padding: 25px 0 30px 25px;">
+                    <input type="submit" value="Изменить товар" class="btn_" />
+                    <div class="validation" asp-validation-summary="All"></div>
+                </div>
+            </div>
+            <a class="RateId displ-o" href="">ClearRate</a>
+</form>
+    </div>
+</div>
+
+<div class="tab-content row" style="margin: 60px 0 0 0;">
+    <div class="tab-pane fade show active" id="addProduct">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Изображение</th>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col" style="display:none;">URL изображения</th>
+                        <th scope="col">Описание</th>
+                        <th scope="col">Рейтинг</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ProductModel p in (List<ProductModel>)ViewBag.Goods)
+                    {
+                        <tr>
+                            <th scope="row">@p.Id</th>
+                            <td><img src=@p.ImgURL class="rounded mx-auto d-block"></td>
+                            <td>@p.Name</td>
+                            <td>@p.Price</td>
+                            <td style="display:none;">@p.ImgURL</td>
+                            <td>@p.Description</td>
+                            <td>@p.GetRate()</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

@@ -12,24 +12,25 @@ using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
 using Controller = Microsoft.AspNetCore.Mvc.Controller;
 using JsonResult = Microsoft.AspNetCore.Mvc.JsonResult;
 using Microsoft.AspNetCore.Authorization;
+using WebApplication1.Models.Data.enums;
 
 
 namespace WebApplication1.Controllers
 {
     public class GoodsController : Controller
     {
-        private IGoods _goods;
+        private IGoods _dbGoods;
         private IUser _users;
 
         public GoodsController(IGoods goods, IUser users)
         {
-            _goods = goods;
+            _dbGoods = goods;
             _users = users;
         }
-
+        
         public IActionResult Product(int productId)
         {
-            ProductModel product = _goods.GetProductById(productId);
+            ProductModel product = _dbGoods.GetProductById(productId);
 
             ProductViewModel productView = new ProductViewModel(product, RateStatus.ok);
 
@@ -42,7 +43,7 @@ namespace WebApplication1.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult RateProduct(int productId, int stars)
         {
-            ProductModel product = _goods.GetProductById(productId);
+            ProductModel product = _dbGoods.GetProductById(productId);
             UserModel authorizedUser = _users.GetUserByEmail(HttpContext.User.Identity.Name);
 
             RateStatus rateStatus = RateStatus.ok;
@@ -51,7 +52,7 @@ namespace WebApplication1.Controllers
             {
                 if (stars != 0)
                 {
-                    _goods.ApplyRate(productId, stars, authorizedUser);
+                    _dbGoods.ApplyRate(productId, stars, authorizedUser);
                 }
             }
             else
@@ -69,7 +70,7 @@ namespace WebApplication1.Controllers
         {
             //return Content(User.);
 
-            List<ProductModel> goods = _goods.GetAllProducts();
+            List<ProductModel> goods = _dbGoods.GetAllProducts();
 
             goods = SortGoods(sortOrder, goods);
 
@@ -81,7 +82,7 @@ namespace WebApplication1.Controllers
         private IndexViewModel TakeIndexViewModel(int page, List<ProductModel> goods)
         {
             int pageSize = 6;
-            int count = goods.Count();
+            int count = goods.Count;
 
             goods = goods.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 

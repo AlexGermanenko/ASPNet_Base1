@@ -1,0 +1,76 @@
+﻿@model WebApplication1.Models.ProductModel
+
+<style>
+    span, .validation {
+        color: orangered;
+    }
+
+    .validation {
+        margin-top: 15px;
+        text-align: left;
+    }
+</style>
+
+<ul class="nav nav-tabs">
+
+    <li class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="EditUser">Редактировать информацию о пользователе</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" asp-area="" asp-controller="Admin" asp-action="AddProduct">Добавить товар</a>
+    </li>
+    <li id="editProduct" class="nav-item">
+        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="EditProduct">Редактировать товар</a>
+    </li>
+</ul>
+
+<center>
+    <h1>Добавить товар</h1>
+</center>
+
+<div class="tab-content row">
+    <div class="tab-pane fade show active" id="addProduct">
+        <div class="row">
+            <form asp-action="AddProduct" asp-controller="Admin" asp-anti-forgery="true">
+                <div class="card col-lg-3" style="margin: 30px 0 0 0; height: 440px; min-width: 280px; border: solid 1px #00ced1; border-radius: 8px">
+                    <center>
+                        <div style="height: 375px;">
+                            <div style="margin-top: 15px">
+                                <label asp-for="Name"></label><br />
+                                <input id="input_1" type="text" asp-for="Name" /><br />
+                                <span asp-validation-for="Name"></span>
+                            </div>
+                            <div style="margin-top: 15px">
+                                <label asp-for="Price"></label><br />
+                                <input id="input_2" type="text" asp-for="Price" /><br />
+                                <span asp-validation-for="Price" />
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <label asp-for="ImgURL"></label><br />
+                                <input id="input_4" asp-for="ImgURL" /><br />
+                                <span asp-validation-for="ImgURL" />
+                            </div>
+                            <div style="margin-top: 15px">
+                                <label asp-for="Description"></label><br />
+                                <textarea style="width: 100%;" id="input_3" asp-for="Description"></textarea><br />
+                                <span asp-validation-for="Description" />
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px">
+                            <input type="submit" value="Добавить товар" class="btn_" />
+                        </div>
+                    </center>
+
+                    <div class="validation" asp-validation-summary="All"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

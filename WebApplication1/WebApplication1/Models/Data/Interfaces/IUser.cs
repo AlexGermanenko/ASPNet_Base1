@@ -14,6 +14,10 @@ namespace WebApplication1.Models.Data.Interfaces
 
         void AddUser(UserModel User);
 
+        void Modify(UserModel User);
+
         UserModel GetUserByEmail(string email);
+
+        bool EmailIsExist(string email);
     }
 }

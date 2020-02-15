@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Interfaces;
 
-namespace WebApplication1.Models.ViewModels
+namespace WebApplication1.Models
 {
     public class RateModel: IRate
     {
@@ -18,7 +18,7 @@ namespace WebApplication1.Models.ViewModels
 
         public RateModel()
         {
-            
+            RatesUsers = new List<UserRateModel>();
         }
 
         public RateModel(int productId, int stars, int votes, ProductModel product)
