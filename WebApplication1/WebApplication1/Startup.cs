@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebApplication1.Interfaces;
 using WebApplication1.Models.Data;
 using WebApplication1.Models.Data.Interfaces;
 using WebApplication1.Models.Data.DB;
