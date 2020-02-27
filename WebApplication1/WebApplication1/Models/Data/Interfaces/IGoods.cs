@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication1.Models.ViewModels;
+using AspNetBase.Models.ViewModels;
 
-namespace WebApplication1.Models.Data.Interfaces
+namespace AspNetBase.Models.Data.Interfaces
 {
     public interface IGoods
     {

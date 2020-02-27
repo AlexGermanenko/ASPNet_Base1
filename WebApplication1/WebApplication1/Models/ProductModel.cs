@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using WebApplication1.Models.ViewModels;
 
-namespace WebApplication1.Models
+namespace AspNetBase.Models
 {
     public class ProductModel
     {

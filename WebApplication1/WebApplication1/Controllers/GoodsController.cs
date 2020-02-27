@@ -1,64 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models.Data.Interfaces;
-using WebApplication1.Mocks;
-using WebApplication1.Models;
-using WebApplication1.Models.ViewModels;
-using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
-using Controller = Microsoft.AspNetCore.Mvc.Controller;
-using JsonResult = Microsoft.AspNetCore.Mvc.JsonResult;
+using AspNetBase.Models;
+using AspNetBase.Models.Data.enums;
+using AspNetBase.Models.Data.Interfaces;
+using AspNetBase.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using WebApplication1.Models.Data.enums;
+using Microsoft.AspNetCore.Mvc;
+using Controller = Microsoft.AspNetCore.Mvc.Controller;
 
 
-namespace WebApplication1.Controllers
+namespace AspNetBase.Controllers
 {
     public class GoodsController : Controller
     {
-        private IGoods _dbGoods;
+        private IGoods _goods;
         private IUser _users;
 
         public GoodsController(IGoods goods, IUser users)
         {
-            _dbGoods = goods;
+            _goods = goods;
             _users = users;
         }
         
         public IActionResult Product(int productId)
         {
-            ProductModel product = _dbGoods.GetProductById(productId);
+            ProductModel product = _goods.GetProductById(productId);
 
             ProductViewModel productView = new ProductViewModel(product, RateStatus.ok);
-
-            string points = productView.Rate.ToString();
 
             return View(productView);
         }
 
         [Authorize]
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [HttpPost]
         public IActionResult RateProduct(int productId, int stars)
         {
-            ProductModel product = _dbGoods.GetProductById(productId);
+            ProductModel product = _goods.GetProductById(productId);
             UserModel authorizedUser = _users.GetUserByEmail(HttpContext.User.Identity.Name);
 
             RateStatus rateStatus = RateStatus.ok;
 
-            if (!authorizedUser.RatesUsers.Any(ru => ru.Rate != null && ru.Rate.ProductId == productId && ru.UserId == authorizedUser.Id))
+            if (authorizedUser.isRated(product))
             {
-                if (stars != 0)
-                {
-                    _dbGoods.ApplyRate(productId, stars, authorizedUser);
-                }
+                rateStatus = RateStatus.already_rate;
             }
             else
             {
-                rateStatus = RateStatus.already_rate;
-            }            
+                if (stars != 0)
+                {
+                    _goods.ApplyRate(productId, stars, authorizedUser);
+                }
+            }
 
             ProductViewModel productView = new ProductViewModel(product, rateStatus);
 
@@ -68,9 +61,7 @@ namespace WebApplication1.Controllers
         
         public IActionResult Index(int page = 1, SortState sortOrder = SortState.Name)
         {
-            //return Content(User.);
-
-            List<ProductModel> goods = _dbGoods.GetAllProducts();
+            List<ProductModel> goods = _goods.GetAllProducts();
 
             goods = SortGoods(sortOrder, goods);
 
@@ -105,6 +96,7 @@ namespace WebApplication1.Controllers
             ViewData["PriceSort"] = sortOrder == SortState.Price ? SortState.PriceDesc : SortState.Price;
             ViewData["RateSort"] = sortOrder == SortState.Rate ? SortState.RateDesc : SortState.Rate;
 
+            //пока не понял как отрефакторить switch
             switch (sortOrder)
             {
                 case SortState.Name:
@@ -120,10 +112,10 @@ namespace WebApplication1.Controllers
                     goods = goods.OrderByDescending(s => s.Price).ToList();
                     break;
                 case SortState.Rate:
-                    goods = goods.OrderBy(s => s.Rate).ToList();
+                    goods = goods.OrderBy(s => s.GetRate()).ToList();
                     break;
                 case SortState.RateDesc:
-                    goods = goods.OrderByDescending(s => s.Rate).ToList();
+                    goods = goods.OrderByDescending(s => s.GetRate()).ToList();
                     break;
             };
 

@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AspNetBase.Models;
+using AspNetBase.Models.Data.enums;
+using AspNetBase.Models.Data.Interfaces;
+using AspNetBase.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models;
-using WebApplication1.Models.Data.enums;
-using WebApplication1.Models.Data.Interfaces;
-using WebApplication1.Models.ViewModels;
-
-namespace WebApplication1.Controllers
-{
     
     public class AdminController : Controller
     {
-        private IUser _dbUser;
-        private IGoods _dbGoods;
-        private UserModel _authorizedUser;
+        private IUser _users;
+        private IGoods _goods;
 
         public AdminController(IGoods goods, IUser users)
         {
-            _dbUser = users;
-            _dbGoods = goods;
+            _users = users;
+            _goods = goods;
         }
 
         [HttpPost]
@@ -29,58 +21,45 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid) 
             {
-                _dbUser.Modify(model);
+                _users.Modify(model);
             }
             else
             {
                 ModelState.AddModelError("", "Некорректные данные");
             }
-
-            ViewData["Title"] = AdminAction.EditUser.ToString();
 
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddProduct(ProductModel model)
         {
-            if (ModelState.IsValid)
-            {
-                _dbGoods.AddProduct(model);
-            }
-            else
-            {
-                ModelState.AddModelError("", "Некорректные данные");
-            }
-
-            ViewData["Title"] = AdminAction.AddProduct.ToString();
+            _goods.AddProduct(model);
 
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public IActionResult EditProduct(ProductModel model)
+        public IActionResult EditProduct(EditProductViewModel model)
         {
-            if (ModelState.IsValid)
+            _goods.ModifyProduct(model.Product);
+
+            EditProductViewModel editProductViewModel = new EditProductViewModel()
             {
-                _dbGoods.ModifyProduct(model);
-            }
-            else
-            {
-                ModelState.AddModelError("", "Некорректные данные");
-            }
+                Title = AdminAction.EditProduct.ToString(),
+                Goods = _goods.GetAllProducts()
+            };
 
-            ViewData["Title"] = AdminAction.EditProduct.ToString();
-
-            ViewBag.Goods = _dbGoods.GetAllProducts();
-
-            return View();
+            return View(editProductViewModel);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult ClearRate(int rateId)
         {
-            _dbGoods.ClearRate(rateId);
+            _goods.ClearRate(rateId);
 
             return RedirectToAction("EditProduct");
         }
@@ -88,7 +67,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult GetProduct(int productId)
         {
-            ProductModel product = _dbGoods.GetProductById(productId);
+            ProductModel product = _goods.GetProductById(productId);
             EditProductModel JsonProduct = new EditProductModel()
             {
                 Id = product.Id,
@@ -100,28 +79,29 @@ namespace WebApplication1.Controllers
                 Rate = product.GetRate()
             };
 
-            //return View(JsonProduct);
             return Json(JsonProduct);
         }
 
         [HttpGet]
         public IActionResult EditUser()
         {
-            _authorizedUser = _dbUser?.GetUserByEmail(HttpContext.User.Identity.Name);
+            UserModel authorizedUser = _users?.GetUserByEmail(HttpContext.User.Identity.Name);
 
             ViewData["Title"] = AdminAction.EditUser.ToString();
 
-            return View(_authorizedUser);
+            return View(authorizedUser);
         }
 
         [HttpGet]
         public IActionResult EditProduct()
         {
-            ViewData["Title"] = AdminAction.EditProduct.ToString();
+            EditProductViewModel editProductViewModel = new EditProductViewModel()
+            {
+                Title = AdminAction.EditProduct.ToString(),
+                Goods = _goods.GetAllProducts()
+            };
 
-            ViewBag.Goods = _dbGoods.GetAllProducts();
-
-            return View();
+        return View(editProductViewModel);
         }
 
         [HttpGet]
@@ -132,4 +112,3 @@ namespace WebApplication1.Controllers
             return View();
         }
     }
-}

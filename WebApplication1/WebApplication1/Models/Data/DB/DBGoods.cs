@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using AspNetBase.Models.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models.Data.Interfaces;
-using WebApplication1.Models;
 
-namespace WebApplication1.Models.Data.DB
+namespace AspNetBase.Models.Data.DB
 {
     public class DBGoods : IGoods
     {
@@ -46,7 +43,6 @@ namespace WebApplication1.Models.Data.DB
         {
             ProductModel product = GetProductById(productId);
 
-
             UserRateModel userRateModel = new UserRateModel() { User = user, UserId = user.Id, Rate = product.Rate, RateId = product.Rate.Id };
 
             if (stars != 0)
@@ -80,6 +76,13 @@ namespace WebApplication1.Models.Data.DB
 
         public void AddProduct(ProductModel model)
         {
+            model.Rate = new RateModel()
+            {
+                ProductId = model.Id,
+                Votes = 0,
+                Stars = 0,
+                Product = model
+            };
             _context.Add(model);
             _context.SaveChanges();
         }

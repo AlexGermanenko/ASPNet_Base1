@@ -1,5 +1,6 @@
-﻿@model WebApplication1.Models.ProductModel
-
+﻿<!--@{}model AspNetBase.Models.ProductModel-->
+@model AspNetBase.Models.ViewModels.EditProductViewModel
+@{ViewData["Title"] = Model.Title;}
 <style>
     span, .validation {
         color: orangered;
@@ -17,7 +18,7 @@
     .displ-o {
         opacity: 0;
     }
-    </style>
+</style>
 
 <ul class="nav nav-tabs">
 
@@ -42,28 +43,28 @@
             <div class="row">
                 <div class="col-lg-10">
                     <div class="row">
-                        <input id="id" type="hidden" asp-for="Id" />
+                        <input id="id" type="hidden" asp-for="Product.Id" />
                         <!--<input id="rateId" type="hidden" asp-for="RateId" />
-    <input id="rate" type="hidden" asp-for="Rate" />-->
+                        <input id="rate" type="hidden" asp-for="Rate" />-->
                         <div class="col-lg-2">
-                            <label asp-for="Name"></label><br />
-                            <input id="name" type="text" asp-for="Name" /><br />
-                            <span asp-validation-for="Name"></span>
+                            <label asp-for="Product.Name"></label><br />
+                            <input id="name" type="text" asp-for="Product.Name" /><br />
+                            <span asp-validation-for="Product.Name"></span>
                         </div>
                         <div class="col-lg-3">
-                            <label asp-for="Price"></label><br />
-                            <input id="price" type="text" asp-for="Price" /><br />
-                            <span asp-validation-for="Price" />
+                            <label asp-for="Product.Price"></label><br />
+                            <input id="price" type="text" asp-for="Product.Price" /><br />
+                            <span asp-validation-for="Product.Price" />
                         </div>
                         <div class="col-lg-3">
-                            <label asp-for="ImgURL"></label><br />
-                            <input id="imgURL" asp-for="ImgURL" /><br />
-                            <span asp-validation-for="ImgURL" />
+                            <label asp-for="Product.ImgURL"></label><br />
+                            <input id="imgURL" asp-for="Product.ImgURL" /><br />
+                            <span asp-validation-for="Product.ImgURL" />
                         </div>
                         <div class="col-lg-4">
-                            <label asp-for="Description"></label><br />
-                            <input id="description" type="text" asp-for="Description" /><br />
-                            <span asp-validation-for="Description" />
+                            <label asp-for="Product.Description"></label><br />
+                            <input id="description" type="text" asp-for="Product.Description" /><br />
+                            <span asp-validation-for="Product.Description" />
                         </div>
                     </div>
                 </div>
@@ -74,7 +75,7 @@
                 </div>
             </div>
             <a class="RateId displ-o" href="">ClearRate</a>
-</form>
+        </form>
     </div>
 </div>
 
@@ -94,7 +95,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (ProductModel p in (List<ProductModel>)ViewBag.Goods)
+                    @foreach (ProductModel p in @Model.Goods)
                     {
                         <tr>
                             <th scope="row">@p.Id</th>

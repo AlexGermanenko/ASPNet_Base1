@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WebApplication1.Models;
+using AspNetBase.Models;
 
-namespace WebApplication1.Mocks
+namespace AspNetBase.Mocks
 {
     public class MockGoods// : IGoods
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication1.Models.ViewModels;
+using AspNetBase.Models.ViewModels;
 
-namespace WebApplication1.Models
+namespace AspNetBase.Models
 {
     public class UserRateModel
     {

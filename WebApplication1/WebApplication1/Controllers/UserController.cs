@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AspNetBase.Models;
+using AspNetBase.Models.Data.Interfaces;
+using AspNetBase.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models;
-using WebApplication1.Models.ViewModels;
-using WebApplication1.Models.Data.Interfaces;
 
-namespace WebApplication1.Controllers
+namespace AspNetBase.Controllers
 {
     public class UserController : Controller
     {
-        private IUser _dbUser;
+        private IUser _users;
 
-        public UserController(IUser user)
+        public UserController(IUser users)
         {
-            _dbUser = user;
+            _users = users;
         }
 
     [HttpGet]
@@ -34,10 +32,10 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_dbUser.EmailIsExist(model?.Email))
+                if (_users.EmailIsExist(model?.Email))
                 {
 
-                    UserModel user = _dbUser.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+                    UserModel user = _users.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
 
                     if (user != null)
                     {
@@ -70,10 +68,10 @@ namespace WebApplication1.Controllers
         {
             if (ModelState.IsValid)
             {
-                UserModel user = _dbUser.GetUserByEmail(HttpContext.User.Identity.Name);
+                UserModel user = _users.GetUserByEmail(HttpContext.User.Identity.Name);
                 if (user == null)
                 {
-                    _dbUser.AddUser(new UserModel
+                    _users.AddUser(new UserModel
                     {
                         Email = model.Email,
                         Password = model.Password,
@@ -114,13 +112,13 @@ namespace WebApplication1.Controllers
         [AcceptVerbs("Get", "Post")]
         public IActionResult CheckLoginEmail(string email)
         {
-            return Json(_dbUser.EmailIsExist(email));
+            return Json(_users.EmailIsExist(email));
         }
 
         [AcceptVerbs("Get", "Post")]
         public IActionResult CheckRegisterEmail(string email)
         {
-            return Json(!_dbUser.EmailIsExist(email));
+            return Json(!_users.EmailIsExist(email));
         }
 
     }

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using AspNetBase.Models.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models.Data.Interfaces;
-using WebApplication1.Models.ViewModels;
 
-namespace WebApplication1.Models.Data.DB
+namespace AspNetBase.Models.Data.DB
 {
     public class DBUser : IUser
     {
@@ -38,5 +36,7 @@ namespace WebApplication1.Models.Data.DB
         }
 
         public bool EmailIsExist(string email) => Users.Any(u => u.Email == email);
+
+        
     }
 }

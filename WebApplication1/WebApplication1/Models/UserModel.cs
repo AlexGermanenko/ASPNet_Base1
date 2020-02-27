@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace WebApplication1.Models
+namespace AspNetBase.Models
 {
     public class UserModel
     {
@@ -19,5 +17,9 @@ namespace WebApplication1.Models
         {
             RatesUsers = new List<UserRateModel>();
         }
+
+        public bool isRated(ProductModel product) => 
+            RatesUsers.Any(ru => ru.Rate != null && ru.Rate.ProductId == product.Id && ru.UserId == Id);
+        
     }
 }

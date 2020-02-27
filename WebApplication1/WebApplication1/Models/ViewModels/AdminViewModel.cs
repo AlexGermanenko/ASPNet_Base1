@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using WebApplication1.Models.Data.enums;
-using WebApplication1.Models.Data.Interfaces;
+using AspNetBase.Models.Data.enums;
 
-namespace WebApplication1.Models.ViewModels
+namespace AspNetBase.Models.ViewModels
 {
     public class AdminViewModel
     {

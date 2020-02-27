@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetBase.Models;
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Models;
-using WebApplication1.Models.ViewModels;
+using AspNetBase.Models.ViewModels;
 
-namespace WebApplication1
+namespace AspNetBase
 {
     public class AppDBContext : DbContext
     {

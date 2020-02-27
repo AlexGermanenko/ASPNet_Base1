@@ -1,4 +1,4 @@
-﻿namespace WebApplication1.Models.Data.enums
+﻿namespace AspNetBase.Models.Data.enums
 {
     public enum SortState
     {

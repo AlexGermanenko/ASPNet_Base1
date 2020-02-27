@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Models.Data.Interfaces
+namespace AspNetBase.Models.Data.Interfaces
 {
     public interface IUser
     {

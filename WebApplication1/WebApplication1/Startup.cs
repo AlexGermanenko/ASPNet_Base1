@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using AspNetBase.Models.Data;
+using AspNetBase.Models.Data.DB;
+using AspNetBase.Models.Data.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,11 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebApplication1.Models.Data;
-using WebApplication1.Models.Data.Interfaces;
-using WebApplication1.Models.Data.DB;
 
-namespace WebApplication1
+namespace AspNetBase
 {
     public class Startup
     {

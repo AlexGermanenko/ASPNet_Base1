@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication1.Models.ViewModels
+namespace AspNetBase.Models.ViewModels
 {
     public enum RateStatus
     {
